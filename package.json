@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env NODE_ENV=development parcel example/index.html --open",
-    "lint": "eslint *.js lib/*.js",
+    "lint": "eslint *.js",
     "test": "yarn lint && size-limit"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
   "size-limit": [
     {
       "path": "index.js",
-      "limit": "274 B",
+      "limit": "250 B",
       "ignore": [
         "rxjs"
       ]
@@ -60,6 +60,7 @@
     }
   },
   "dependencies": {
+    "rxjs": "^6.5.2",
     "storeon": "^0.8.3"
   }
 }
