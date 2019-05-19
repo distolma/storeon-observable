@@ -26,7 +26,7 @@ Create simple epic using RxJS operators.
 #### `epics.js`
 ```javascript
 import { combineEpics, ofEvent } from 'storeon-observable';
-import { mapTo } from 'rxjs/operators'
+import { mapTo, delay } from 'rxjs/operators'
 
 const epic = action$ => action$.pipe(
   ofEvent('ping'),
