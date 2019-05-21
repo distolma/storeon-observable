@@ -1,7 +1,9 @@
 {
   "name": "storeon-observable",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "RxJS based module for Storeon which allows to create async actions",
   "main": "index.js",
+  "sideEffects": false,
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
   "license": "MIT",
@@ -31,6 +33,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "size-limit": "^1.3.2",
+    "storeon": "^0.8.3",
     "typescript": "^3.4.5"
   },
   "lint-staged": {
@@ -47,10 +50,7 @@
   "size-limit": [
     {
       "path": "index.js",
-      "limit": "250 B",
-      "ignore": [
-        "rxjs"
-      ]
+      "limit": "240 B"
     }
   ],
   "eslintConfig": {
@@ -59,8 +59,8 @@
       "node/no-extraneous-require": "off"
     }
   },
-  "dependencies": {
-    "rxjs": "^6.5.2",
-    "storeon": "^0.8.3"
+  "dependencies": {},
+  "peerDependencies": {
+    "rxjs": "^6.5.2"
   }
 }
