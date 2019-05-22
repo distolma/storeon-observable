@@ -14,16 +14,16 @@ Read more about Storeon [article].
 [article]: https://evilmartians.com/chronicles/storeon-redux-in-173-bytes 
 
 ## Install
-
+This module has peer dependencie of `rxjs@6.x.x` which will has to be installed as well.
 ```sh
 npm install storeon-observable
 ``` 
 
 ## How to use
 
-Create simple epic using RxJS operators.
+You need to create epic using RxJS operators. This epic will listen to event `ping`, wait for 1 second and map them to a new event, `pong`
 
-#### `epics.js`
+#### `epic.js`
 ```javascript
 import { combineEpics, ofEvent } from 'storeon-observable';
 import { mapTo, delay } from 'rxjs/operators'
@@ -37,7 +37,7 @@ const epic = action$ => action$.pipe(
 export const epics = combineEpics([epic]);
 ```
 
-Connect all epics to the Storeon using the `storeon-observable` middleware
+Create store and pass `epics` to the `createEpicMiddleware` function. It will connect all epics to the Storeon using the `storeon-observable` middleware
 
 #### `store.js`
 ```javascript

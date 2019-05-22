@@ -1,4 +1,4 @@
-import { switchMap, mapTo, filter, takeUntil } from 'rxjs/operators'
+import { switchMap, mapTo, takeUntil } from 'rxjs/operators'
 import { interval } from 'rxjs';
 import { combineEpics, ofEvent } from '../';
 
