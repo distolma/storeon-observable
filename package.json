@@ -10,7 +10,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development parcel example/index.html --open",
     "lint": "eslint *.js",
-    "test": "yarn lint && size-limit"
+    "test": "jest --coverage && yarn lint && size-limit"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0-beta.0 <7"
