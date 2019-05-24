@@ -1,5 +1,5 @@
 var rxjs = require('rxjs')
-var operators = require('rxjs/operators') 
+var operators = require('rxjs/operators')
 
 var index = require('./')
 
