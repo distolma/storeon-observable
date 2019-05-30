@@ -79,6 +79,6 @@ export const epics = combineEpics([epic]);
 
 This module based on [redux-observable](https://github.com/redux-observable/redux-observable).
 
-## LICENSE
+## License
 
 [MIT](LICENCE)
