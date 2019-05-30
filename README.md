@@ -54,3 +54,31 @@ let increment = store => {
 
 export const store = createStore([increment, createEpicMiddleware(epics)]);
 ```
+
+Using TypeScript you can assign `Epic` interface to the function to specify `action` and `state` typing
+
+#### `epic.ts`
+```typescript
+import { combineEpics, ofEvent, Epic } from 'storeon-observable';
+import { mapTo, delay } from 'rxjs/operators'
+
+interface State {
+  isPinging: boolean;
+}
+
+const epic: Epic<State> = (action$, state$) => action$.pipe(
+  ofEvent('ping'),
+  delay(1000),
+  mapTo('pong'),
+);
+
+export const epics = combineEpics([epic]);
+```
+
+## Acknowledgments
+
+This module based on [redux-observable](https://github.com/redux-observable/redux-observable).
+
+## LICENSE
+
+[MIT](LICENCE)
