@@ -4,7 +4,7 @@
 
 A tiny rxjs 6-based middleware for [Storeon]. Compose and cancel async actions to create side effects and more. ([Demo])
 
-The size is only 240 bytes. It uses [Size Limit] to control size.
+The size is only 226 bytes. It uses [Size Limit] to control size.
 
 Read more about Storeon [article]. 
 
