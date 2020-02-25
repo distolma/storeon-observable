@@ -1,30 +1,28 @@
-var operators = require('rxjs/operators')
-var rxjs = require('rxjs')
+let operators = require('rxjs/operators')
+let rxjs = require('rxjs')
 
 function combineEpics (epics) {
-  return function () {
-    var args = [].slice.call(arguments)
-
-    return rxjs.merge.apply(null, epics.map(function (epic) {
+  return function (...args) {
+    return rxjs.merge.apply(null, epics.map(epic => {
       return epic.apply(null, args)
     }))
   }
 }
 
 function createEpicMiddleware (epics) {
-  var epic$ = new rxjs.BehaviorSubject(epics)
+  let epic$ = new rxjs.BehaviorSubject(epics)
 
   return function (store) {
-    var action$ = new rxjs.Subject()
-    var state$ = new rxjs.Subject()
+    let action$ = new rxjs.Subject()
+    let state$ = new rxjs.Subject()
 
-    store.on('@dispatch', function (_, event) {
+    store.on('@dispatch', (_, event) => {
       action$.next.apply(action$, event)
     })
 
-    store.on('@changed', function (state) { state$.next(state) })
+    store.on('@changed', state => { state$.next(state) })
 
-    var result$ = epic$.pipe(operators.switchMap(function (epic) {
+    let result$ = epic$.pipe(operators.switchMap(epic => {
       return epic(action$, state$)
     }))
 
@@ -32,18 +30,16 @@ function createEpicMiddleware (epics) {
   }
 }
 
-function ofEvent () {
-  var events = [].slice.call(arguments)
-
+function ofEvent (...events) {
   return function (source) {
-    return source.pipe(operators.filter(function (event) {
-      return events.indexOf(event) !== -1
+    return source.pipe(operators.filter(event => {
+      return events.includes(event)
     }))
   }
 }
 
 module.exports = {
-  ofEvent: ofEvent,
-  combineEpics: combineEpics,
-  createEpicMiddleware: createEpicMiddleware
+  ofEvent,
+  combineEpics,
+  createEpicMiddleware
 }

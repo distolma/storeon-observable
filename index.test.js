@@ -1,34 +1,34 @@
-var rxjs = require('rxjs')
-var operators = require('rxjs/operators')
+let rxjs = require('rxjs')
+let operators = require('rxjs/operators')
 
-var index = require('./')
+let index = require('./')
 
-describe('combineEpics', function () {
-  it('should combine epics', function () {
+describe('combineEpics', () => {
+  it('should combine epics', () => {
     function epic1 (actions) {
       return actions.pipe(
         index.ofEvent('ACTION1'),
-        operators.map(function () { return 'DELEGATED1' })
+        operators.map(() => { return 'DELEGATED1' })
       )
     }
     function epic2 (actions) {
       return actions.pipe(
         index.ofEvent('ACTION2'),
-        operators.map(function () { return 'DELEGATED2' })
+        operators.map(() => { return 'DELEGATED2' })
       )
     }
 
-    var epic = index.combineEpics([
+    let epic = index.combineEpics([
       epic1,
       epic2
     ])
 
-    var store = { I: 'am', a: 'store' }
-    var actions = new rxjs.Subject()
-    var result = epic(actions, store)
-    var emittedActions = []
+    let store = { I: 'am', a: 'store' }
+    let actions = new rxjs.Subject()
+    let result = epic(actions, store)
+    let emittedActions = []
 
-    result.subscribe(function (emittedAction) {
+    result.subscribe(emittedAction => {
       return emittedActions.push(emittedAction)
     })
 
@@ -41,31 +41,33 @@ describe('combineEpics', function () {
     ])
   })
 
-  it('should pass along every argument arbitrarily', function (done) {
-    var epic1 = jest.fn(function () { return ['first'] })
-    var epic2 = jest.fn(function () { return ['second'] })
+  it('should pass along every argument arbitrarily', () => {
+    return new Promise(resolve => {
+      let epic1 = jest.fn(() => { return ['first'] })
+      let epic2 = jest.fn(() => { return ['second'] })
 
-    var rootEpic = index.combineEpics([
-      epic1,
-      epic2
-    ])
+      let rootEpic = index.combineEpics([
+        epic1,
+        epic2
+      ])
 
-    rootEpic([1, 2, 3, 4])
-      .pipe(operators.toArray())
-      .subscribe(function (values) {
-        expect(values).toEqual(['first', 'second'])
+      rootEpic([1, 2, 3, 4])
+        .pipe(operators.toArray())
+        .subscribe(values => {
+          expect(values).toEqual(['first', 'second'])
 
-        expect(epic1).toBeCalledTimes(1)
-        expect(epic2).toBeCalledTimes(1)
+          expect(epic1).toHaveBeenCalledTimes(1)
+          expect(epic2).toHaveBeenCalledTimes(1)
 
-        expect(epic1).toBeCalledWith([1, 2, 3, 4])
-        expect(epic2).toBeCalledWith([1, 2, 3, 4])
+          expect(epic1).toHaveBeenCalledWith([1, 2, 3, 4])
+          expect(epic2).toHaveBeenCalledWith([1, 2, 3, 4])
 
-        done()
-      })
+          resolve()
+        })
+    })
   })
 })
 
-describe('createEpicMiddleware', function () {
+describe('createEpicMiddleware', () => {
 //    TODO
 })
