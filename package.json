@@ -1,10 +1,10 @@
 {
   "name": "storeon-observable",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "RxJS based module for Storeon which allows to create async actions",
-  "main": "dist/index.umd.js",
-  "module": "dist/index.es5.js",
-  "typings": "dist/types/index.d.ts",
+  "main": "index.js",
+  "module": "module/index.js",
+  "typings": "index.d.ts",
   "files": [
     "dist"
   ],
@@ -13,8 +13,8 @@
   "license": "MIT",
   "scripts": {
     "start": "rollup -c rollup.config.ts -w",
-    "build": "rollup -c rollup.config.ts",
-    "lint": "eslint *.js",
+    "build": "tsc && tsc -p tsconfig.module.json",
+    "lint": "eslint index.ts --fix",
     "test": "jest --coverage && yarn lint && size-limit"
   },
   "peerDependencies": {
@@ -23,6 +23,8 @@
   "devDependencies": {
     "@logux/eslint-config": "^36.0.0",
     "@size-limit/preset-small-lib": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es5": "^1.5.0",
@@ -65,10 +67,17 @@
     }
   ],
   "eslintConfig": {
-    "extends": "@logux/eslint-config",
+    "extends": [
+      "@logux/eslint-config",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
     "rules": {
       "node/no-extraneous-require": "off",
-      "func-style": "off"
+      "prefer-let/prefer-let": "off",
+      "func-style": "off",
+      "@typescript-eslint/no-explicit-any": "off"
     }
   }
 }
