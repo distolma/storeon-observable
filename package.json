@@ -53,7 +53,7 @@
     "typescript": "^3.8.3"
   },
   "lint-staged": {
-    "index.ts": [
+    "**/*.ts": [
       "eslint --fix",
       "git add"
     ]
