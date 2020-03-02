@@ -14,7 +14,7 @@
   "scripts": {
     "start": "rollup -c rollup.config.ts -w",
     "build": "tsc && tsc -p tsconfig.module.json",
-    "lint": "eslint index.ts --fix",
+    "lint": "eslint index.ts",
     "size": "size-limit",
     "test": "jest --coverage && yarn lint && size-limit"
   },
