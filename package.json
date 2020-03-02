@@ -2,13 +2,18 @@
   "name": "storeon-observable",
   "version": "0.2.0",
   "description": "RxJS based module for Storeon which allows to create async actions",
-  "main": "index.js",
-  "sideEffects": false,
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es5.js",
+  "typings": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env NODE_ENV=development parcel example/index.html --open",
+    "start": "rollup -c rollup.config.ts -w",
+    "build": "rollup -c rollup.config.ts",
     "lint": "eslint *.js",
     "test": "jest --coverage && yarn lint && size-limit"
   },
@@ -18,8 +23,6 @@
   "devDependencies": {
     "@logux/eslint-config": "^36.0.0",
     "@size-limit/preset-small-lib": "^4.0.2",
-    "babel-preset-react-app": "^9.1.1",
-    "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-es5": "^1.5.0",
@@ -34,15 +37,18 @@
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.7",
-    "parcel-bundler": "^1.12.4",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "rollup": "^1.32.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.5.0",
+    "rollup-plugin-typescript2": "^0.26.0",
     "size-limit": "^4.0.2",
-    "storeon": "^0.9.8",
-    "typescript": "^3.8.2"
+    "storeon": "^1.0.0",
+    "typescript": "^3.8.3"
   },
   "lint-staged": {
-    "*.js": [
+    "src/**/*.ts": [
       "eslint --fix",
       "git add"
     ]
