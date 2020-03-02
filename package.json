@@ -16,10 +16,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "rollup -c rollup.config.ts -w",
-    "build": "tsc && tsc -p tsconfig.module.json && size-limit",
+    "compile": "tsc && tsc -p tsconfig.module.json",
+    "build": "yarn run lint && yarn run test && yarn run compile && yarn run size",
+    "size": "size-limit",
     "lint": "eslint index.ts",
-    "test": "jest --coverage && yarn lint"
+    "test": "jest --coverage"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0-beta.0 <7",

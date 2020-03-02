@@ -12,6 +12,7 @@ node_modules/
 coverage/
 
 # Release
+module
 index.js
 index.d.ts
 index.js.map

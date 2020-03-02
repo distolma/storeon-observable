@@ -9,7 +9,6 @@ yarn.lock
 
 # Dev
 .travis.yml
-.eslintignore
 test/
 node_modules/
 coverage/
