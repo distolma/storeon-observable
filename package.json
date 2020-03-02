@@ -10,13 +10,16 @@
   ],
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
+  "contributors": [
+    "Dmytro Mostovyi <djmakaron2009@gmail.com>",
+    "Paweł Majewski <majo44@gmail.com>"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "rollup -c rollup.config.ts -w",
-    "build": "tsc && tsc -p tsconfig.module.json",
+    "build": "tsc && tsc -p tsconfig.module.json && size-limit",
     "lint": "eslint index.ts",
-    "size": "size-limit",
-    "test": "jest --coverage && yarn lint && size-limit"
+    "test": "jest --coverage && yarn lint"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0-beta.0 <7",
@@ -49,7 +52,7 @@
     "typescript": "^3.8.3"
   },
   "lint-staged": {
-    "src/**/*.ts": [
+    "index.ts": [
       "eslint --fix",
       "git add"
     ]
