@@ -3,5 +3,8 @@
   "compilerOptions": {
     "module": "es2015",
     "outDir": "module"
-  }
+  },
+  "files": [
+    "index.ts"
+  ]
 }
