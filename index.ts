@@ -1,5 +1,5 @@
 import {
-  BehaviorSubject, merge, Observable, OperatorFunction, Subject
+  BehaviorSubject, merge, Observable, OperatorFunction
 } from 'rxjs'
 import { filter, switchMap } from 'rxjs/operators'
 import { Module, Store } from 'storeon'
@@ -21,43 +21,53 @@ export type EventsObservable<
     Observable<StoreonEvent<Events, Event>>;
 
 /**
+ * Returns the combined event object
+ * @param event the event type
+ * @param value data which should
+ */
+export const toEvent = <Events, Event extends keyof Events = keyof Events>(
+  event: Event,
+  ...value: Events[Event] extends (never | undefined)
+    ? [never?]
+    : [Events[Event]]):
+  StoreonEvent<Events, Event> => ({
+    type: event,
+    payload: (value[0] as Events[Event])
+  })
+
+/**
  * Creates observable of dispatched store events.
  */
 export const toEventObservable = <
   State,
-  Events = any,
-  InEvent extends keyof Events = keyof Events>(store: Store<State, Events>):
-    Observable<StoreonEvent<Events, InEvent>> => {
-  const event$ = new Subject<StoreonEvent<Events, InEvent>>()
-  store.on('@dispatch', (_, event) => event$.next(event as any))
-  return event$
+  Events = any>(store: Store<State, Events>):
+    Observable<StoreonEvent<Events, keyof Events>> => {
+  return new Observable<StoreonEvent<Events, keyof Events>>(
+    subscriber => {
+      subscriber.add(store.on(
+        '@dispatch', (_, event) =>
+          subscriber.next(
+            toEvent<any>(event[0], event[1]) as
+              StoreonEvent<Events, keyof Events>)))
+    })
 }
 
 export class StateObservable<S> extends Observable<S> {
-    value: S;
-    private __notifier = new Subject<S>();
+  get value (): S {
+    return this._value
+  }
 
-    constructor (input$: Observable<S>, initialState: S) {
-      super(subscriber => {
-        const subscription = this.__notifier.subscribe(subscriber)
-        if (subscription && !subscription.closed) {
-          subscriber.next(this.value)
-        }
-        return subscription
-      })
-
-      this.value = initialState
-      input$.subscribe(value => {
-        // We only want to update state$ if it has actually changed since
-        // redux requires reducers use immutability patterns.
-        // This is basically what distinctUntilChanged() does but it's so simple
-        // we don't need to pull that code in
-        if (value !== this.value) {
-          this.value = value
-          this.__notifier.next(value)
-        }
-      })
-    }
+  private _value: S;
+  constructor (store: Store<S>) {
+    super(subscriber => {
+      subscriber.add(store.on(
+        '@changed', state => {
+          this._value = state
+          subscriber.next(state)
+        }))
+    })
+    this._value = store.get()
+  }
 }
 
 /**
@@ -65,12 +75,7 @@ export class StateObservable<S> extends Observable<S> {
  */
 export const toStateObservable =
   <State, Events = any>(store: Store<State, Events>):
-    StateObservable<State> => {
-    const stateInput$ = new Subject<State>()
-    const state$ = new StateObservable<State>(stateInput$, store.get())
-    store.on('@changed', state => stateInput$.next(state))
-    return state$
-  }
+    StateObservable<State> => new StateObservable<State>(store)
 
 /**
  * Filters the observable
@@ -92,21 +97,6 @@ export const ofEvent = <
 }
 
 /**
- * Returns the combined event object
- * @param event the event type
- * @param value data which should
- */
-export const toEvent = <Events, Event extends keyof Events = keyof Events>(
-  event: Event,
-  ...value: Events[Event] extends (never | undefined)
-    ? [never?]
-    : [Events[Event]]):
-  StoreonEvent<Events, Event> => ({
-    type: event,
-    payload: (value[0] as Events[Event])
-  })
-
-/**
  * RxJS side-effect implementation for storeon
  */
 export interface Epic<
@@ -124,15 +114,13 @@ export interface Epic<
  */
 export const createEpicModule = <
   State,
-  Events = any,
-  InEvent extends keyof Events = keyof Events,
-  OutEvent extends InEvent = InEvent>(
-    epic: Epic<State, Events, InEvent, OutEvent>):
+  Events = any>(
+    epic: Epic<State, Events>):
   Module<State, Events> => {
   const epic$ = new BehaviorSubject(epic)
   return (store: Store<State, Events>): void => {
     const state$ = toStateObservable<State, Events>(store)
-    const event$ = toEventObservable<State, Events, InEvent>(store)
+    const event$ = toEventObservable<State, Events>(store)
     epic$.pipe(
       switchMap(e => e(event$, state$))
     ).subscribe(ev =>

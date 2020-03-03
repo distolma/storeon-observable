@@ -64,8 +64,8 @@
     }
   },
   "size-limit": [
-    { "path": "index.js", "limit": "400 B" },
-    { "path": "module/index.js", "limit": "420 B" }
+    { "path": "index.js", "limit": "360 B" },
+    { "path": "module/index.js", "limit": "380 B" }
   ],
   "eslintConfig": {
     "extends": [

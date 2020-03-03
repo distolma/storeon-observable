@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Subject } from 'rxjs'
 import { map, toArray } from 'rxjs/operators'
-import { combineEpics, ofEvent, toEvent } from '../index';
+import { combineEpics, ofEvent, toEvent } from '../index'
 
 describe('combineEpics', () => {
   it('should combine epics', () => {
-    function epic1 (actions) {
+    function epic1 (actions: any) {
       return actions.pipe(
         ofEvent<any>('ACTION1'),
         map(() => { return 'DELEGATED1' })
       )
     }
-    function epic2 (actions) {
+    function epic2 (actions: any) {
       return actions.pipe(
         ofEvent<any>('ACTION2'),
         map(() => { return 'DELEGATED2' })
@@ -26,7 +26,7 @@ describe('combineEpics', () => {
     const store = { I: 'am', a: 'store' }
     const actions = new Subject()
     const result = epic(actions as any, store as any)
-    const emittedActions = []
+    const emittedActions: any = []
 
     result.subscribe(emittedAction => {
       return emittedActions.push(emittedAction)
@@ -66,8 +66,4 @@ describe('combineEpics', () => {
         })
     })
   })
-})
-
-describe('createEpicMiddleware', () => {
-//    TODO
 })
