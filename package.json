@@ -75,6 +75,7 @@
     ],
     "parser": "@typescript-eslint/parser",
     "rules": {
+      "multiline-ternary": "off",
       "node/no-extraneous-require": "off",
       "prefer-let/prefer-let": "off",
       "func-style": "off",

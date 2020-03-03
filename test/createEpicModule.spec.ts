@@ -18,7 +18,7 @@ describe('createEpicModule', () => {
     const module = createEpicModule(
       events$ =>
         events$.pipe(
-          ofEvent<any>('a'),
+          ofEvent('a'),
           map(e => toEvent('b', e.payload))))
     module(store)
 

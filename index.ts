@@ -8,9 +8,12 @@ import { Module, Store } from 'storeon'
  * Composed Storeon event type.
  */
 export type StoreonEvent<Events, Event extends keyof Events = keyof Events> = {
-    type: Event;
-    payload: Events[Event];
+  type: Event;
+  payload: Events[Event];
 };
+
+type StoreonEventUnion<Events> =
+  { [k in keyof Events]: StoreonEvent<Events, k> }[keyof Events]
 
 /**
  * Observable of Storeon events.
@@ -18,22 +21,33 @@ export type StoreonEvent<Events, Event extends keyof Events = keyof Events> = {
 export type EventsObservable<
   Events,
   Event extends keyof Events = keyof Events> =
-    Observable<StoreonEvent<Events, Event>>;
+  Observable<StoreonEvent<Events, Event>>;
 
 /**
  * Returns the combined event object
  * @param event the event type
- * @param value data which should
  */
-export const toEvent = <Events, Event extends keyof Events = keyof Events>(
+export function toEvent<Event extends PropertyKey>(
+  event: Event):
+  StoreonEvent<{[P in Event]: undefined}>
+/**
+ * Returns the combined event object
+ * @param event the event type
+ * @param value the event value
+ */
+export function toEvent<Event extends PropertyKey, Data>(
   event: Event,
-  ...value: Events[Event] extends (never | undefined)
-    ? [never?]
-    : [Events[Event]]):
-  StoreonEvent<Events, Event> => ({
-    type: event,
-    payload: (value[0] as Events[Event])
-  })
+  value: Data):
+  StoreonEvent<{[P in Event]: Data}>
+export function toEvent<Event extends PropertyKey, Data> (
+  event: Event,
+  value?: Data):
+  StoreonEvent<{[P in Event]: Data}> {
+  return (
+    (typeof value !== 'undefined')
+      ? { type: event, payload: value }
+      : { type: event }) as any
+}
 
 /**
  * Creates observable of dispatched store events.
@@ -41,22 +55,18 @@ export const toEvent = <Events, Event extends keyof Events = keyof Events>(
 export const toEventObservable = <
   State,
   Events = any>(store: Store<State, Events>):
-    Observable<StoreonEvent<Events, keyof Events>> => {
-  return new Observable<StoreonEvent<Events, keyof Events>>(
+  EventsObservable<Events> => {
+  return new Observable<StoreonEvent<Events>>(
     subscriber => {
       subscriber.add(store.on(
         '@dispatch', (_, event) =>
           subscriber.next(
-            toEvent<any>(event[0], event[1]) as
-              StoreonEvent<Events, keyof Events>)))
+            toEvent(event[0], event[1]) as any)))
     })
 }
 
 export class StateObservable<S> extends Observable<S> {
-  get value (): S {
-    return this._value
-  }
-
+  get value (): S { return this._value }
   private _value: S;
   constructor (store: Store<S>) {
     super(subscriber => {
@@ -104,9 +114,9 @@ export interface Epic<
   Events = any,
   InEvent extends keyof Events = keyof Events,
   OutEvent extends InEvent = InEvent> {
-    (action$: EventsObservable<Events, InEvent>,
-     state$: StateObservable<State>):
-      EventsObservable<Events, OutEvent>;
+  (action$: EventsObservable<Pick<Events, InEvent>>,
+   state$: StateObservable<State>):
+    Observable<StoreonEventUnion<Pick<Events, OutEvent>>>;
 }
 
 /**
@@ -137,47 +147,47 @@ export const createEpicModule = <
  */
 export function combineEpics<
   S, Es = any, IE1 extends keyof Es = keyof Es, OE1 extends IE1 = IE1>(
-    e1: Epic<S, Es, IE1, OE1>): Epic<S, Es, IE1, OE1>;
+  e1: Epic<S, Es, IE1, OE1>): Epic<S, Es, IE1, OE1>;
 export function combineEpics<
   S, Es = any, IE1 extends keyof Es = keyof Es, OE1 extends IE1 = IE1,
-    IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2>(
-    e1: Epic<S, Es, IE1, OE1>,
-    e2: Epic<S, Es, IE2, OE2>): Epic<S, Es, IE1 | IE2, OE1 | OE2>;
+  IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2>(
+  e1: Epic<S, Es, IE1, OE1>,
+  e2: Epic<S, Es, IE2, OE2>): Epic<S, Es, IE1 | IE2, OE1 | OE2>;
 export function combineEpics<
   S, Es = any, IE1 extends keyof Es = keyof Es, OE1 extends IE1 = IE1,
-    IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
-    IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3>(
-    e1: Epic<S, Es, IE1, OE1>,
-    e2: Epic<S, Es, IE2, OE2>,
-    e3: Epic<S, Es, IE3, OE3>): Epic<S, Es, IE1 | IE2 | IE3, OE1 | OE2 | OE3>;
+  IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
+  IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3>(
+  e1: Epic<S, Es, IE1, OE1>,
+  e2: Epic<S, Es, IE2, OE2>,
+  e3: Epic<S, Es, IE3, OE3>): Epic<S, Es, IE1 | IE2 | IE3, OE1 | OE2 | OE3>;
 export function combineEpics<
   S, Es = any, IE1 extends keyof Es = keyof Es, OE1 extends IE1 = IE1,
-    IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
-    IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3,
-    IE4 extends keyof Es = keyof Es, OE4 extends IE4 = IE4>(
-    e1: Epic<S, Es, IE1, OE1>,
-    e2: Epic<S, Es, IE2, OE2>,
-    e3: Epic<S, Es, IE3, OE3>,
-    e4: Epic<S, Es, IE4, OE4>):
+  IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
+  IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3,
+  IE4 extends keyof Es = keyof Es, OE4 extends IE4 = IE4>(
+  e1: Epic<S, Es, IE1, OE1>,
+  e2: Epic<S, Es, IE2, OE2>,
+  e3: Epic<S, Es, IE3, OE3>,
+  e4: Epic<S, Es, IE4, OE4>):
   Epic<S, Es, IE1 | IE2 | IE3 | IE4, OE1 | OE2 | OE3 | OE4>;
 export function combineEpics<
   S, Es = any, IE1 extends keyof Es = keyof Es, OE1 extends IE1 = IE1,
-    IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
-    IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3,
-    IE4 extends keyof Es = keyof Es, OE4 extends IE4 = IE4,
-    IE5 extends keyof Es = keyof Es, OE5 extends IE5 = IE5>(
-    e1: Epic<S, Es, IE1, OE1>,
-    e2: Epic<S, Es, IE2, OE2>,
-    e3: Epic<S, Es, IE3, OE3>,
-    e4: Epic<S, Es, IE4, OE4>,
-    e5: Epic<S, Es, IE5, OE5>):
+  IE2 extends keyof Es = keyof Es, OE2 extends IE2 = IE2,
+  IE3 extends keyof Es = keyof Es, OE3 extends IE3 = IE3,
+  IE4 extends keyof Es = keyof Es, OE4 extends IE4 = IE4,
+  IE5 extends keyof Es = keyof Es, OE5 extends IE5 = IE5>(
+  e1: Epic<S, Es, IE1, OE1>,
+  e2: Epic<S, Es, IE2, OE2>,
+  e3: Epic<S, Es, IE3, OE3>,
+  e4: Epic<S, Es, IE4, OE4>,
+  e5: Epic<S, Es, IE5, OE5>):
   Epic<S, Es, IE1 | IE2 | IE3 | IE4 | IE5, OE1 | OE2 | OE3 | OE4 | IE5>;
 export function combineEpics<
   S, Es = any, IE extends keyof Es = keyof Es, OE extends IE = IE>(
-    ...e1: Array<Epic<S, Es, IE, OE>>): Epic<S, Es, IE, OE>;
+  ...e1: Array<Epic<S, Es, IE, OE>>): Epic<S, Es, IE, OE>;
 export function combineEpics (...epics: Array<Epic<any>>): Epic<any> {
-  return (action$: EventsObservable<any>, state$: StateObservable<any>):
-    EventsObservable<any> => {
+  return (action$: EventsObservable<any, any>, state$: StateObservable<any>):
+    EventsObservable<any, any> => {
     return merge(...epics.map(epic => epic(action$, state$)))
   }
 }

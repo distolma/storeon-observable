@@ -24,7 +24,7 @@ describe('ofEvent', () => {
     store.dispatch('a', 1)
     store.dispatch('b', 2)
     expect(subscriber).toBeCalledTimes(1)
-    expect(subscriber).toBeCalledWith(toEvent<any>('b', 2))
+    expect(subscriber).toBeCalledWith(toEvent('b', 2))
     sub.unsubscribe()
   })
 })

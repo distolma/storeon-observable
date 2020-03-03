@@ -4,7 +4,7 @@
 
 A tiny rxjs 6-based middleware for [Storeon]. Compose and cancel async actions to create side effects and more. ([Demo])
 
-The size is only 226 bytes. It uses [Size Limit] to control size.
+The size is only 351 bytes. It uses [Size Limit] to control size.
 
 Read more about Storeon [article]. 
 
@@ -14,7 +14,7 @@ Read more about Storeon [article].
 [article]: https://evilmartians.com/chronicles/storeon-redux-in-173-bytes 
 
 ## Install
-This module has peer dependencie of `rxjs@6.x.x` which will has to be installed as well.
+This module has peer dependencie of `rxjs@6.x.x` and `storeon@1.x.x` which will has to be installed as well.
 ```sh
 npm install storeon-observable
 ``` 
@@ -25,16 +25,16 @@ You need to create epic using RxJS operators. This epic will listen to event `pi
 
 #### `epic.js`
 ```javascript
-import { combineEpics, ofEvent } from 'storeon-observable';
+import { combineEpics, ofEvent, toEvent } from 'storeon-observable';
 import { mapTo, delay } from 'rxjs/operators'
 
-const epic = action$ => action$.pipe(
+const epic = events$ => events$.pipe(
   ofEvent('ping'),
   delay(1000),
-  mapTo('pong'),
+  mapTo(toEvent('pong')),
 );
 
-export const epics = combineEpics([epic]);
+export const epics = combineEpics(epic);
 ```
 
 Create store and pass `epics` to the `createEpicMiddleware` function. It will connect all epics to the Storeon using the `storeon-observable` middleware
@@ -42,7 +42,7 @@ Create store and pass `epics` to the `createEpicMiddleware` function. It will co
 #### `store.js`
 ```javascript
 import createStore from 'storeon'
-import { createEpicMiddleware } from 'storeon-observable';
+import { createEpicModule } from 'storeon-observable';
 
 import { epics } from './epic';
 
@@ -52,27 +52,32 @@ let increment = store => {
   store.on('pong', () => ({ isPinging: false }))
 }
 
-export const store = createStore([increment, createEpicMiddleware(epics)]);
+export const store = createStore([increment, createEpicModule(epics)]);
 ```
 
 Using TypeScript you can assign `Epic` interface to the function to specify `action` and `state` typing
 
 #### `epic.ts`
 ```typescript
-import { combineEpics, ofEvent, Epic } from 'storeon-observable';
+import { combineEpics, ofEvent, Epic, toEvent } from 'storeon-observable';
 import { mapTo, delay } from 'rxjs/operators'
 
 interface State {
   isPinging: boolean;
 }
 
-const epic: Epic<State> = (action$, state$) => action$.pipe(
+interface Events {
+  ping: undefined;
+  pong: undefined;
+}
+
+const epic: Epic<State, Events> = (action$, state$) => action$.pipe(
   ofEvent('ping'),
   delay(1000),
-  mapTo('pong'),
+  mapTo(toEvent('pong')),
 );
 
-export const epics = combineEpics([epic]);
+export const epics = combineEpics(epic);
 ```
 
 ## Acknowledgments

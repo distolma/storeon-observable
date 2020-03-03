@@ -20,7 +20,7 @@ describe('toEventObservable', () => {
     const sub = observable.subscribe(subscriber)
     store.dispatch('a', 1)
     expect(subscriber).toBeCalledTimes(1)
-    expect(subscriber).toBeCalledWith(toEvent<any>('a', 1))
+    expect(subscriber).toBeCalledWith(toEvent('a', 1))
     sub.unsubscribe()
   })
 
