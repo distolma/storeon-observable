@@ -17,6 +17,7 @@
   "license": "MIT",
   "scripts": {
     "compile": "tsc && tsc -p tsconfig.module.json",
+    "doc": "typedoc --out doc --theme minimal",
     "build": "yarn run lint && yarn run test && yarn run compile && yarn run size",
     "size": "size-limit",
     "lint": "eslint index.ts",
@@ -50,7 +51,8 @@
     "size-limit": "^4.0.2",
     "storeon": "^1.0.0",
     "ts-jest": "^25.2.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "typedoc": "^0.16.11"
   },
   "lint-staged": {
     "**/*.ts": [

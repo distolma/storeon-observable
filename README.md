@@ -28,7 +28,7 @@ You need to create epic using RxJS operators. This epic will listen to event `pi
 import { combineEpics, ofEvent, toEvent } from 'storeon-observable';
 import { mapTo, delay } from 'rxjs/operators'
 
-const epic = events$ => events$.pipe(
+const epic = event$ => event$.pipe(
   ofEvent('ping'),
   delay(1000),
   mapTo(toEvent('pong')),
@@ -71,7 +71,7 @@ interface Events {
   pong: undefined;
 }
 
-const epic: Epic<State, Events> = (action$, state$) => action$.pipe(
+const epic: Epic<State, Events> = (event$, state$) => event$.pipe(
   ofEvent('ping'),
   delay(1000),
   mapTo(toEvent('pong')),

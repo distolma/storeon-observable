@@ -5,40 +5,58 @@ import { filter, switchMap } from 'rxjs/operators'
 import { Module, Store } from 'storeon'
 
 /**
- * Composed Storeon event type.
+ * @hidden
  */
-export type StoreonEvent<Events, Event extends keyof Events = keyof Events> = {
-  type: Event;
-  payload: Events[Event];
-};
-
 type StoreonEventUnion<Events> =
   { [k in keyof Events]: StoreonEvent<Events, k> }[keyof Events]
 
 /**
- * Observable of Storeon events.
+ * Storeon event type.
+ *
+ * Storeon api dispatch/on separate event type (name) from the event payload
+ * (data). For work with Observables api we will combine that two
+ * details in to one object.
+ * To produce proper storeon event
+ *
+ * @typeparam Events Supported events declaration.
+ * @typeparam Event Type or types of event.
  */
-export type EventsObservable<
-  Events,
-  Event extends keyof Events = keyof Events> =
-  Observable<StoreonEvent<Events, Event>>;
+export interface StoreonEvent<
+  Events, Event extends keyof Events = keyof Events> {
+  /**
+   * Type (name) of event.
+   */
+  type: Event;
+  /**
+   * Event data (payload).
+   */
+  payload: Events[Event];
+}
 
 /**
- * Returns the combined event object
- * @param event the event type
+ * Combines event type (name) and event payload (data) to the single
+ * [[StoreonEvent]] object.
+ *
+ * @param event Type (name) of event.
+ * @typeparam Event Type of event type.
  */
 export function toEvent<Event extends PropertyKey>(
   event: Event):
   StoreonEvent<{[P in Event]: undefined}>
+
 /**
- * Returns the combined event object
- * @param event the event type
- * @param value the event value
+ * Combines event type (name) and event payload (data) to the single
+ * [[StoreonEvent]] object.
+ *
+ * @param type Type (name) of event.
+ * @param payload The event payload (data).
+ *
+ * @typeparam Event Type of event type.
  */
-export function toEvent<Event extends PropertyKey, Data>(
-  event: Event,
-  value: Data):
-  StoreonEvent<{[P in Event]: Data}>
+export function toEvent<Event extends PropertyKey, Payload>(
+  type: Event,
+  payload: Payload):
+  StoreonEvent<{[P in Event]: Payload}>
 export function toEvent<Event extends PropertyKey, Data> (
   event: Event,
   value?: Data):
@@ -51,11 +69,21 @@ export function toEvent<Event extends PropertyKey, Data> (
 
 /**
  * Creates observable of dispatched store events.
+ *
+ * @param store Store which will be observed for any event.
+ * @typeparam State Type of state kept within the store.
+ * @typeparam Events Supported events declaration.
+ *
+ * @example
+ * import createStore from 'storeon';
+ * import { toEventObservable } from 'storeon-observable';
+ * const store = createStore([]);
+ * toEventObservable(store).subscribe(e => ...);
  */
 export const toEventObservable = <
   State,
   Events = any>(store: Store<State, Events>):
-  EventsObservable<Events> => {
+  Observable<StoreonEvent<Events>> => {
   return new Observable<StoreonEvent<Events>>(
     subscriber => {
       subscriber.add(store.on(
@@ -65,9 +93,19 @@ export const toEventObservable = <
     })
 }
 
+/**
+ * Storeon store state observable.
+ */
 export class StateObservable<S> extends Observable<S> {
+  /**
+   * Current value of state.
+   */
   get value (): S { return this._value }
   private _value: S;
+
+  /**
+   * @param store store which will be observed.
+   */
   constructor (store: Store<S>) {
     super(subscriber => {
       subscriber.add(store.on(
@@ -82,14 +120,27 @@ export class StateObservable<S> extends Observable<S> {
 
 /**
  * Creates observable of store state.
+ * @param store Store which will be observed for the changes.
  */
 export const toStateObservable =
   <State, Events = any>(store: Store<State, Events>):
     StateObservable<State> => new StateObservable<State>(store)
 
 /**
- * Filters the observable
- * @param event
+ * Filters the observable of events to specific one.
+ * @param event Type (name) of event which should be filtered.
+ *
+ * @typeparam Events All events declaration.
+ * @typeparam InEvent Event types expected at input.
+ * @typeparam OutEvent Event types expected at output.
+ *
+ * @example
+ * import {Epic, ofType} from 'storeon-observable';
+ * import { mapTo, delay } from 'rxjs/operators';
+ * const epic = event$ => event$.pipe(
+ *   ofEvent('ping'),
+ *   delay(1000),
+ *   mapTo(toEvent('pong')));
  */
 export const ofEvent = <
   Events,
@@ -107,20 +158,28 @@ export const ofEvent = <
 }
 
 /**
- * RxJS side-effect implementation for storeon
+ * RxJS side-effect implementation for storeon.
+ * @typeparam State Type of state.
+ * @typeparam Events All events declaration.
+ * @typeparam InEvent Event types expected at input.
+ * @typeparam OutEvent Event types expected at output.
  */
 export interface Epic<
   State,
   Events = any,
   InEvent extends keyof Events = keyof Events,
   OutEvent extends InEvent = InEvent> {
-  (action$: EventsObservable<Pick<Events, InEvent>>,
+  /**
+   * @param event$ Observable of events dispatched on store.
+   * @param state$ Observable of state.
+   */
+  (event$: Observable<StoreonEvent<Pick<Events, InEvent>>>,
    state$: StateObservable<State>):
     Observable<StoreonEventUnion<Pick<Events, OutEvent>>>;
 }
 
 /**
- * Creates Storeon module.
+ * Creates Storeon RxJs module.
  */
 export const createEpicModule = <
   State,
@@ -186,8 +245,8 @@ export function combineEpics<
   S, Es = any, IE extends keyof Es = keyof Es, OE extends IE = IE>(
   ...e1: Array<Epic<S, Es, IE, OE>>): Epic<S, Es, IE, OE>;
 export function combineEpics (...epics: Array<Epic<any>>): Epic<any> {
-  return (action$: EventsObservable<any, any>, state$: StateObservable<any>):
-    EventsObservable<any, any> => {
-    return merge(...epics.map(epic => epic(action$, state$)))
+  return (event$: Observable<any>, state$: StateObservable<any>):
+    Observable<any> => {
+    return merge(...epics.map(epic => epic(event$, state$)))
   }
 }
