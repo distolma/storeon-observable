@@ -1,16 +1,18 @@
+# IDE
+.idea
 .editorconfig
 
+# Packages manager
 npm-debug.log
 yarn-error.log
 yarn.lock
 
+# Dev
 .travis.yml
-.eslintignore
-*.test.js
-
 test/
 node_modules/
-example/
 coverage/
 .cache/
-dist/
+
+# Src
+index.ts
