@@ -2,7 +2,7 @@
 
 <img src="https://storeon.github.io/storeon/logo.svg" align="right" alt="Storeon logo by Anton Lovchikov" width="160" height="142">
 
-A tiny rxjs 6-based middleware for [Storeon]. Compose and cancel async actions to create side effects and more. ([Demo])
+A tiny rxjs 6-based middleware for [Storeon]. Compose and cancel async actions to create side effects and more.
 
 The size is only 351 bytes. It uses [Size Limit] to control size.
 
@@ -10,7 +10,6 @@ Read more about Storeon [article].
 
 [storeon]: https://github.com/storeon/storeon 
 [size limit]: https://github.com/ai/size-limit
-[demo]: https://codesandbox.io/s/admiring-beaver-edi8m
 [article]: https://evilmartians.com/chronicles/storeon-redux-in-173-bytes 
 
 ## Install
@@ -37,7 +36,7 @@ const epic = event$ => event$.pipe(
 export const epics = combineEpics(epic);
 ```
 
-Create store and pass `epics` to the `createEpicMiddleware` function. It will connect all epics to the Storeon using the `storeon-observable` middleware
+Create store and pass `epics` to the `createEpicModule` function. It will connect all epics to the Storeon using the `storeon-observable` middleware
 
 #### `store.js`
 ```javascript
