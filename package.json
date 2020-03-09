@@ -24,7 +24,8 @@
     "build": "yarn run lint && yarn run test && yarn run compile && yarn run size && yarn run doc",
     "size": "size-limit",
     "lint": "eslint index.ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "prepublish": "yarn build"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0-beta.0 <7",
