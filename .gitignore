@@ -1,7 +1,20 @@
+# IDE
+.idea
+*.iml
+
+# Packages manager
 npm-debug.log
 yarn-error.log
 
+# Dev
 .cache/
 node_modules/
-dist/
 coverage/
+
+# Release
+doc
+module
+index.js
+index.d.ts
+index.js.map
+
