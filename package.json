@@ -18,7 +18,7 @@
   "scripts": {
     "compile": "tsc && tsc -p tsconfig.module.json",
     "doc": "typedoc --out doc --theme minimal",
-    "build": "yarn run lint && yarn run test && yarn run compile && yarn run size",
+    "build": "yarn run lint && yarn run test && yarn run compile && yarn run size && yarn run doc",
     "size": "size-limit",
     "lint": "eslint index.ts",
     "test": "jest --coverage"
