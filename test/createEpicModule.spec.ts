@@ -1,16 +1,16 @@
 import { map } from 'rxjs/operators'
-import { Store } from 'storeon'
-import * as createStore from 'storeon'
+import { StoreonStore, createStoreon } from 'storeon'
+
 import {
   toEvent,
   createEpicModule, ofEvent
 } from '../index'
 
 describe('createEpicModule', () => {
-  let store: Store
+  let store: StoreonStore
 
   beforeEach(() => {
-    store = createStore([])
+    store = createStoreon([])
   })
 
   it('should create proper observable of events from store', () => {

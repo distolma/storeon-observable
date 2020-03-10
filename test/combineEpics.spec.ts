@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { Subject } from 'rxjs'
+import { Subject, Observable } from 'rxjs'
 import { map, toArray } from 'rxjs/operators'
+
 import { combineEpics, ofEvent, toEvent } from '../index'
 
 describe('combineEpics', () => {
   it('should combine epics', () => {
-    function epic1 (actions: any) {
+    function epic1 (actions: any): Observable<any> {
       return actions.pipe(
         ofEvent<any>('ACTION1'),
         map(() => { return 'DELEGATED1' })
       )
     }
-    function epic2 (actions: any) {
+    function epic2 (actions: any): Observable<any> {
       return actions.pipe(
         ofEvent<any>('ACTION2'),
         map(() => { return 'DELEGATED2' })

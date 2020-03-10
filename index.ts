@@ -2,7 +2,7 @@ import {
   BehaviorSubject, merge, Observable, OperatorFunction
 } from 'rxjs'
 import { filter, switchMap } from 'rxjs/operators'
-import { Module, Store } from 'storeon'
+import { StoreonModule, StoreonStore } from 'storeon'
 
 /**
  * @hidden
@@ -82,7 +82,7 @@ export function toEvent<Event extends PropertyKey, Data> (
  */
 export const toEventObservable = <
   State,
-  Events = any>(store: Store<State, Events>):
+  Events = any>(store: StoreonStore<State, Events>):
   Observable<StoreonEvent<Events>> => {
   return new Observable<StoreonEvent<Events>>(
     subscriber => {
@@ -106,7 +106,7 @@ export class StateObservable<S> extends Observable<S> {
   /**
    * @param store store which will be observed.
    */
-  constructor (store: Store<S>) {
+  constructor (store: StoreonStore<S>) {
     super(subscriber => {
       subscriber.add(store.on(
         '@changed', state => {
@@ -123,7 +123,7 @@ export class StateObservable<S> extends Observable<S> {
  * @param store Store which will be observed for the changes.
  */
 export const toStateObservable =
-  <State, Events = any>(store: Store<State, Events>):
+  <State, Events = any>(store: StoreonStore<State, Events>):
     StateObservable<State> => new StateObservable<State>(store)
 
 /**
@@ -185,9 +185,9 @@ export const createEpicModule = <
   State,
   Events = any>(
     epic: Epic<State, Events>):
-  Module<State, Events> => {
+  StoreonModule<State, Events> => {
   const epic$ = new BehaviorSubject(epic)
-  return (store: Store<State, Events>): void => {
+  return (store: StoreonStore<State, Events>): void => {
     const state$ = toStateObservable<State, Events>(store)
     const event$ = toEventObservable<State, Events>(store)
     epic$.pipe(

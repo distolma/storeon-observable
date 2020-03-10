@@ -1,13 +1,13 @@
-import { Store } from 'storeon'
-import * as createStore from 'storeon'
+import { StoreonStore, createStoreon } from 'storeon'
+
 import { toStateObservable, StateObservable } from '../index'
 
 describe('toStateObservable', () => {
-  let store: Store
+  let store: StoreonStore
   let observable: StateObservable<any>
 
   beforeEach(() => {
-    store = createStore([])
+    store = createStoreon([])
     observable = toStateObservable(store)
   })
 

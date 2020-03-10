@@ -1,4 +1,6 @@
-import { delay, map, mapTo, tap } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
+import { createStoreon } from 'storeon'
+
 import {
   combineEpics,
   createEpicModule,
@@ -6,7 +8,6 @@ import {
   ofEvent,
   toEvent
 } from '../index'
-import createStore = require('storeon');
 
 describe('examples', () => {
   it('example 1', async () => {
@@ -38,7 +39,7 @@ describe('examples', () => {
       )
 
     const epics = combineEpics(epic)
-    const store = createStore<State, Events>([createEpicModule(epics)])
+    const store = createStoreon<State, Events>([createEpicModule(epics)])
 
     store.on('ping', pingSpy)
     store.on('pong', pongSpy)

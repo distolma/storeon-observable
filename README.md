@@ -40,7 +40,7 @@ Create store and pass `epics` to the `createEpicModule` function. It will connec
 
 #### `store.js`
 ```javascript
-import createStore from 'storeon'
+import { createStoreon } from 'storeon'
 import { createEpicModule } from 'storeon-observable';
 
 import { epics } from './epic';
@@ -51,7 +51,7 @@ let increment = store => {
   store.on('pong', () => ({ isPinging: false }))
 }
 
-export const store = createStore([increment, createEpicModule(epics)]);
+export const store = createStoreon([increment, createEpicModule(epics)]);
 ```
 
 Using TypeScript you can assign `Epic` interface to the function to specify `action` and `state` typing
