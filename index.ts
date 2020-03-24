@@ -75,9 +75,9 @@ export function toEvent<Event extends PropertyKey, Data> (
  * @typeparam Events Supported events declaration.
  *
  * @example
- * import createStore from 'storeon';
+ * import { createStoreon } from 'storeon';
  * import { toEventObservable } from 'storeon-observable';
- * const store = createStore([]);
+ * const store = createStoreon([]);
  * toEventObservable(store).subscribe(e => ...);
  */
 export const toEventObservable = <
