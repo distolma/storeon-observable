@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.2
+- Better tree-shaking ([f4ed0b](https://github.com/distolma/storeon-observable/commit/f4ed0be0496b7d038bd28aa8bb564ac3ae4f5eb7))
+
 ## 0.3.1
 - Add sideEffects false ([6ce94e](https://github.com/distolma/storeon-observable/commit/6ce94e09feb87b5fd652c57867ec3287655fdf3d))
 
