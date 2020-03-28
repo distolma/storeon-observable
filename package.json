@@ -1,6 +1,6 @@
 {
   "name": "storeon-observable",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "RxJS based module for Storeon which allows to create async actions",
   "main": "index.js",
   "module": "module/index.js",

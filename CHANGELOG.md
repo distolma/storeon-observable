@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.1
+- Add sideEffects false ([6ce94e](https://github.com/distolma/storeon-observable/commit/6ce94e09feb87b5fd652c57867ec3287655fdf3d))
+
 ## 0.3.0
 - New implementation using Typescript (by Paweł Majewski) ([5f3d55](https://github.com/distolma/storeon-observable/commit/5f3d5542b604473e24f3032edf0aa36a29a4ad51))
 
