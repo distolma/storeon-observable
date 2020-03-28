@@ -4,7 +4,7 @@ import { StoreonStore, createStoreon } from 'storeon'
 import {
   toEvent,
   createEpicModule, ofEvent
-} from '../index'
+} from '../src'
 
 describe('createEpicModule', () => {
   let store: StoreonStore

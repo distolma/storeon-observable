@@ -2,15 +2,12 @@
   "name": "storeon-observable",
   "version": "0.3.1",
   "description": "RxJS based module for Storeon which allows to create async actions",
-  "main": "index.js",
-  "module": "module/index.js",
-  "typings": "index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "typings": "lib/types/index.d.ts",
   "sideEffects": "false",
   "files": [
-    "module",
-    "index.js",
-    "index.js.map",
-    "index.d.ts"
+    "lib/"
   ],
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
@@ -20,13 +17,15 @@
   ],
   "license": "MIT",
   "scripts": {
-    "compile": "tsc && tsc -p tsconfig.module.json",
-    "doc": "typedoc --out doc --theme minimal",
-    "build": "yarn run lint && yarn run test && yarn run compile && yarn run size && yarn run doc",
+    "build": "run-p build:*",
+    "build:cjs": "tsc -p configs/tsconfig.cjs.json",
+    "build:esm": "tsc -p configs/tsconfig.esm.json",
+    "build:types": "tsc -p configs/tsconfig.types.json",
+    "test": "jest --coverage && run-p build:esm build:cjs && run-p lint size",
     "size": "size-limit",
-    "lint": "eslint index.ts",
-    "test": "jest --coverage",
-    "prepublish": "yarn build"
+    "lint": "eslint src/**/*.ts",
+    "doc:build": "typedoc --out doc --theme minimal",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "rxjs": ">=6.0.0-beta.0 <7",
@@ -52,6 +51,7 @@
     "husky": "^4.2.3",
     "jest": "^25.2.3",
     "lint-staged": "^10.0.9",
+    "npm-run-all": "^4.1.5",
     "size-limit": "^4.4.2",
     "storeon": "^2.0.2",
     "ts-jest": "^25.2.1",
@@ -71,11 +71,11 @@
   },
   "size-limit": [
     {
-      "path": "index.js",
-      "limit": "360 B"
+      "path": "lib/cjs/index.js",
+      "limit": "450 B"
     },
     {
-      "path": "module/index.js",
+      "path": "lib/esm/index.js",
       "limit": "400 B"
     }
   ],

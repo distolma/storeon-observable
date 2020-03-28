@@ -5,7 +5,7 @@ import {
   ofEvent,
   toEvent,
   toEventObservable
-} from '../index'
+} from '../src'
 
 describe('ofEvent', () => {
   let store: StoreonStore

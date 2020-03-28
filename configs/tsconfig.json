@@ -2,13 +2,10 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es6",
-    "module":"commonjs",
+    "module":"es2015",
     "lib": ["es7"],
     "strict": true,
-    "sourceMap": true,
-    "declaration": true
-  },
-  "files": [
-    "index.ts"
-  ]
+    "outDir": "../dist",
+    "types": ["node"]
+  }
 }

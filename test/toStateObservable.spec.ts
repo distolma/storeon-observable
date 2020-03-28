@@ -1,6 +1,6 @@
 import { StoreonStore, createStoreon } from 'storeon'
 
-import { toStateObservable, StateObservable } from '../index'
+import { toStateObservable, StateObservable } from '../src'
 
 describe('toStateObservable', () => {
   let store: StoreonStore

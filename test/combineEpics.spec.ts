@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs'
 import { map, toArray } from 'rxjs/operators'
 
-import { combineEpics, ofEvent, toEvent } from '../index'
+import { combineEpics, ofEvent, toEvent } from '../src'
 
 describe('combineEpics', () => {
   it('should combine epics', () => {

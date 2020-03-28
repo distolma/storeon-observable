@@ -7,7 +7,7 @@ import {
   Epic,
   ofEvent,
   toEvent
-} from '../index'
+} from '../src'
 
 describe('examples', () => {
   it('example 1', async () => {

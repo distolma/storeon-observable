@@ -13,8 +13,6 @@ coverage/
 
 # Release
 doc
-module
-index.js
-index.d.ts
-index.js.map
+lib
+dist
 
