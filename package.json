@@ -5,6 +5,7 @@
   "main": "index.js",
   "module": "module/index.js",
   "typings": "index.d.ts",
+  "sideEffects": "false",
   "files": [
     "module",
     "index.js",
