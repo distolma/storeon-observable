@@ -7,7 +7,8 @@
   "typings": "lib/types/index.d.ts",
   "sideEffects": "false",
   "files": [
-    "lib/"
+    "lib/",
+    "dist/"
   ],
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
@@ -18,13 +19,14 @@
   "license": "MIT",
   "scripts": {
     "build": "run-p build:*",
+    "build:umd": "rollup -c",
     "build:cjs": "tsc -p configs/tsconfig.cjs.json",
     "build:esm": "tsc -p configs/tsconfig.esm.json",
     "build:types": "tsc -p configs/tsconfig.types.json",
     "test": "jest --coverage && run-p build:esm build:cjs && run-p lint size",
     "size": "size-limit",
     "lint": "eslint src/**/*.ts",
-    "doc:build": "typedoc --out doc --theme minimal",
+    "doc:build": "typedoc --out doc --theme minimal --tsconfig configs/tsconfig.json src",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
@@ -36,25 +38,28 @@
     "@size-limit/preset-small-lib": "^4.4.2",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.5",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.0.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "17.2.0",
+    "eslint-plugin-unicorn": "^18.0.1",
     "husky": "^4.2.3",
-    "jest": "^25.2.3",
-    "lint-staged": "^10.0.9",
+    "jest": "^25.2.4",
+    "lint-staged": "^10.1.0",
     "npm-run-all": "^4.1.5",
+    "rollup": "^2.3.1",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.27.0",
     "size-limit": "^4.4.2",
     "storeon": "^2.0.2",
-    "ts-jest": "^25.2.1",
+    "ts-jest": "^25.3.0",
     "typedoc": "^0.17.3",
     "typescript": "^3.8.3"
   },
@@ -68,6 +73,9 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "engines": {
+    "node": ">8"
   },
   "size-limit": [
     {
@@ -91,7 +99,8 @@
       "node/no-extraneous-require": "off",
       "prefer-let/prefer-let": "off",
       "func-style": "off",
-      "@typescript-eslint/no-explicit-any": "off"
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/explicit-function-return-type": "off"
     }
   }
 }

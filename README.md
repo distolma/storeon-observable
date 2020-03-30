@@ -7,7 +7,7 @@
 
 A tiny rxjs 6-based middleware for [Storeon]. Compose and cancel async actions to create side effects and more.
 
-The size is only 351 bytes. It uses [Size Limit] to control size.
+The size is only 383 bytes. It uses [Size Limit] to control size.
 
 Read more about Storeon [article]. 
 
@@ -20,6 +20,13 @@ This module has peer dependencie of `rxjs@6.x.x` and `storeon@1.x.x` which will 
 ```sh
 npm install storeon-observable
 ``` 
+
+### Via CDN
+For CDN, you can use [unpkg](https://unpkg.com/):
+
+https://unpkg.com/storeon-observable/dist/storeon-observable.min.js
+
+The global namespace for module is `StoreonObservable`
 
 ## How to use
 
