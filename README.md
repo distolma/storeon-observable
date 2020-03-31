@@ -16,17 +16,31 @@ Read more about Storeon [article].
 [article]: https://evilmartians.com/chronicles/storeon-redux-in-173-bytes 
 
 ## Install
-This module has peer dependencie of `rxjs@6.x.x` and `storeon@1.x.x` which will has to be installed as well.
+
+**Via NPM:** This module has peer dependencie of `rxjs@6.x.x` and `storeon@2.x.x` which will has to be installed as well.
 ```sh
-npm install storeon-observable
+npm install -S storeon-observable
 ``` 
+or
+```sh
+yarn add storeon-observable
+```
 
-### Via CDN
-For CDN, you can use [unpkg](https://unpkg.com/):
+**Via CDN:** Add the following script to the end of your `<head>` section.
 
-https://unpkg.com/storeon-observable/dist/storeon-observable.min.js
+```html
+<script src="https://unpkg.com/storeon-observable/dist/storeon-observable.min.js"></script>
+```
 
 The global namespace for module is `StoreonObservable`
+
+**Via ES Modules:** Use the following import inside your ESModule.
+
+```html
+<script type="module">
+  import { createEpicModule } from 'https://cdn.pika.dev/storeon-observable'
+</script>
+```
 
 ## How to use
 
@@ -34,7 +48,7 @@ You need to create epic using RxJS operators. This epic will listen to event `pi
 
 #### `epic.js`
 ```javascript
-import { combineEpics, ofEvent, toEvent } from 'storeon-observable';
+import { combineEpics, ofEvent, toEvent } from 'storeon-observable'
 import { mapTo, delay } from 'rxjs/operators'
 
 const epic = event$ => event$.pipe(
@@ -51,7 +65,7 @@ Create store and pass `epics` to the `createEpicModule` function. It will connec
 #### `store.js`
 ```javascript
 import { createStoreon } from 'storeon'
-import { createEpicModule } from 'storeon-observable';
+import { createEpicModule } from 'storeon-observable'
 
 import { epics } from './epic';
 
