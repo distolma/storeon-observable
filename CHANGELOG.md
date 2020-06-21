@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.0
+- node.js < v10 support is dropped
+- storeon < v3 support is dropped
+
 ## 0.4.0
 - Add UMD support ([38d9fe](https://github.com/distolma/storeon-observable/commit/38d9fe8da9fcb7cd2b983e77972070cb6b2e264e))
 
