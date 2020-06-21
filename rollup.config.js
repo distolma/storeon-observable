@@ -8,7 +8,7 @@ function createTsConfig () {
   })
 }
 
-function createUmdConfig ({ file }) {
+function createUmdConfig ({ file, compress }) {
   return {
     file,
     format: 'umd',
@@ -17,9 +17,7 @@ function createUmdConfig ({ file }) {
       'rxjs': 'rxjs',
       'rxjs/operators': 'rxjs.operators'
     },
-    plugins: [
-      terser({ include: [/^.+\.min\.js$/] })
-    ]
+    plugins: compress && [terser()]
   }
 }
 
@@ -27,7 +25,7 @@ export default {
   input: 'src/index.ts',
   output: [
     createUmdConfig({ file: 'dist/storeon-observable.js' }),
-    createUmdConfig({ file: 'dist/storeon-observable.min.js' })
+    createUmdConfig({ file: 'dist/storeon-observable.min.js', compress: true })
   ],
   plugins: [createTsConfig()]
 }
