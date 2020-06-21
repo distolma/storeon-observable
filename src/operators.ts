@@ -12,9 +12,9 @@ import { StateObservable } from './StateObservable'
  * @param event Type (name) of event.
  * @typeparam Event Type of event type.
  */
-export function toEvent<Event extends PropertyKey>(
-  event: Event):
-  StoreonEvent<{[P in Event]: undefined}>
+export function toEvent<Event extends PropertyKey> (
+  event: Event
+): StoreonEvent<{ [P in Event]: undefined }>
 
 /**
  * Combines event type (name) and event payload (data) to the single
@@ -25,27 +25,26 @@ export function toEvent<Event extends PropertyKey>(
  *
  * @typeparam Event Type of event type.
  */
-export function toEvent<Event extends PropertyKey, Payload>(
+export function toEvent<Event extends PropertyKey, Payload> (
   type: Event,
-  payload: Payload):
-  StoreonEvent<{[P in Event]: Payload}>
+  payload: Payload
+): StoreonEvent<{ [P in Event]: Payload }>
 export function toEvent<Event extends PropertyKey, Data> (
   event: Event,
-  value?: Data):
-  StoreonEvent<{[P in Event]: Data}> {
-  return (
-    (typeof value !== 'undefined')
-      ? { type: event, payload: value }
-      : { type: event }) as any
+  value?: Data
+): StoreonEvent<{ [P in Event]: Data }> {
+  return (typeof value !== 'undefined'
+    ? { type: event, payload: value }
+    : { type: event }) as any
 }
 
 /**
  * Creates observable of store state.
  * @param store Store which will be observed for the changes.
  */
-export const toStateObservable =
-  <State, Events = any>(store: StoreonStore<State, Events>):
-    StateObservable<State> => new StateObservable<State>(store)
+export const toStateObservable = <State, Events = any>(
+  store: StoreonStore<State, Events>
+): StateObservable<State> => new StateObservable<State>(store)
 
 /**
  * Creates observable of dispatched store events.
@@ -60,17 +59,16 @@ export const toStateObservable =
  * const store = createStoreon([]);
  * toEventObservable(store).subscribe(e => ...);
  */
-export const toEventObservable = <
-  State,
-  Events = any>(store: StoreonStore<State, Events>):
-  Observable<StoreonEvent<Events>> => {
-  return new Observable<StoreonEvent<Events>>(
-    subscriber => {
-      subscriber.add(store.on(
-        '@dispatch', (_, event) =>
-          subscriber.next(
-            toEvent(event[0], event[1]) as any)))
-    })
+export const toEventObservable = <State, Events = any>(
+  store: StoreonStore<State, Events>
+): Observable<StoreonEvent<Events>> => {
+  return new Observable<StoreonEvent<Events>>(subscriber => {
+    subscriber.add(
+      store.on('@dispatch', (_, event) =>
+        subscriber.next(toEvent(event[0], event[1]) as any)
+      )
+    )
+  })
 }
 
 /**
@@ -92,14 +90,17 @@ export const toEventObservable = <
 export const ofEvent = <
   Events,
   InEvent extends keyof Events = keyof Events,
-  OutEvent extends InEvent = InEvent>(event: OutEvent):
-  OperatorFunction<
-    StoreonEvent<Events, InEvent>,
-    StoreonEvent<Events, OutEvent>> => {
+  OutEvent extends InEvent = InEvent
+>(
+  event: OutEvent
+): OperatorFunction<
+  StoreonEvent<Events, InEvent>,
+  StoreonEvent<Events, OutEvent>
+> => {
   return (source): Observable<StoreonEvent<Events, OutEvent>> =>
     source.pipe(
-      filter(
-        (ev): ev is StoreonEvent<Events, OutEvent> => {
-          return event === ev.type
-        }))
+      filter((ev): ev is StoreonEvent<Events, OutEvent> => {
+        return event === ev.type
+      })
+    )
 }

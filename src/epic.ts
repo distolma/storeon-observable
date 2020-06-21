@@ -13,21 +13,24 @@ export interface Epic<
   State,
   Events = any,
   InEvent extends keyof Events = keyof Events,
-  OutEvent extends InEvent = InEvent> {
+  OutEvent extends InEvent = InEvent
+> {
   /**
    * @param event$ Observable of events dispatched on store.
    * @param state$ Observable of state.
    */
-  (event$: Observable<StoreonEvent<Pick<Events, InEvent>>>,
-   state$: StateObservable<State>):
-    Observable<StoreonEventUnion<Pick<Events, OutEvent>>>;
+  (
+    event$: Observable<StoreonEvent<Pick<Events, InEvent>>>,
+    state$: StateObservable<State>
+  ): Observable<StoreonEventUnion<Pick<Events, OutEvent>>>
 }
 
 /**
  * @hidden
  */
-type StoreonEventUnion<Events> =
-  { [k in keyof Events]: StoreonEvent<Events, k> }[keyof Events]
+type StoreonEventUnion<Events> = {
+  [k in keyof Events]: StoreonEvent<Events, k>
+}[keyof Events]
 
 /**
  * Storeon event type.
@@ -41,13 +44,15 @@ type StoreonEventUnion<Events> =
  * @typeparam Event Type or types of event.
  */
 export interface StoreonEvent<
-  Events, Event extends keyof Events = keyof Events> {
+  Events,
+  Event extends keyof Events = keyof Events
+> {
   /**
    * Type (name) of event.
    */
-  type: Event;
+  type: Event
   /**
    * Event data (payload).
    */
-  payload: Events[Event];
+  payload: Events[Event]
 }

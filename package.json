@@ -30,49 +30,51 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "rxjs": ">=6.0.0-beta.0 <7",
-    "storeon": "^2.0.0"
+    "rxjs": "^6.0.0",
+    "storeon": "^3.0.0"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.2",
-    "@logux/eslint-config": "36.1.3",
-    "@size-limit/preset-small-lib": "^4.5.0",
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.13.4",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
-    "eslint": "^6.8.0",
+    "@logux/eslint-config": "39.0.3",
+    "@size-limit/preset-small-lib": "^4.5.1",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "eslint": "^7.3.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.9.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jest": "^23.16.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.0.1",
+    "eslint-plugin-prettierx": "^0.12.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^19.0.1",
+    "eslint-plugin-unicorn": "^20.1.0",
     "jest": "^26.0.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.7.6",
-    "rollup-plugin-terser": "^5.3.0",
-    "rollup-plugin-typescript2": "^0.27.0",
-    "size-limit": "^4.5.0",
+    "rollup": "^2.17.1",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "rxjs": "^6.5.5",
+    "size-limit": "^4.5.1",
     "storeon": "^2.0.2",
-    "ts-jest": "^25.4.0",
-    "typedoc": "^0.17.6",
-    "typescript": "^3.8.3"
+    "ts-jest": "^26.1.0",
+    "typedoc": "^0.17.7",
+    "typescript": "^3.9.5"
   },
   "engines": {
-    "node": ">8"
+    "node": ">10"
   },
   "size-limit": [
     {
       "path": "lib/cjs/index.js",
-      "limit": "450 B"
+      "limit": "510 B"
     },
     {
       "path": "lib/esm/index.js",
-      "limit": "400 B"
+      "limit": "383 B"
     }
   ],
   "eslintConfig": {
