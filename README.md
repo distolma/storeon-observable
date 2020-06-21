@@ -17,7 +17,7 @@ Read more about Storeon [article].
 
 ## Install
 
-**Via NPM:** This module has peer dependencie of `rxjs@6.x.x` and `storeon@2.x.x` which will has to be installed as well.
+**Via NPM:** This module has peer dependencie of `rxjs@6.x.x` and `storeon@3.x.x` which will has to be installed as well.
 ```sh
 npm install -S storeon-observable
 ``` 
