@@ -64,9 +64,23 @@ export const toEventObservable = <State, Events = any>(
 ): Observable<StoreonEvent<Events>> => {
   return new Observable<StoreonEvent<Events>>(subscriber => {
     subscriber.add(
-      store.on('@dispatch', (_, event) =>
-        subscriber.next(toEvent(event[0], event[1]) as any)
-      )
+      store.on('@dispatch', (_, event) => {
+        const nextEvent = toEvent(event[0], event[1]) as any
+        if (event[2]) {
+          // if there are some events handlers for this particular event
+          // we will add to the end of handlers stack temporary event handler
+          // which after all other events handlers (which are able to change the state)
+          // will notify observable
+          const un = store.on(event[0], () => {
+            un()
+            subscriber.next(nextEvent)
+          })
+        } else {
+          // if there is no events handlers for this particular event
+          // we can safely notify observable, as state will not change
+          subscriber.next(nextEvent)
+        }
+      })
     )
   })
 }
