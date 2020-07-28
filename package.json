@@ -65,16 +65,16 @@
     "typescript": "^3.9.5"
   },
   "engines": {
-    "node": ">10"
+    "node": ">=10"
   },
   "size-limit": [
     {
       "path": "lib/cjs/index.js",
-      "limit": "510 B"
+      "limit": "538 B"
     },
     {
       "path": "lib/esm/index.js",
-      "limit": "383 B"
+      "limit": "410 B"
     }
   ],
   "eslintConfig": {
