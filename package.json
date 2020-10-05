@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.2",
-    "@logux/eslint-config": "39.0.3",
+    "@logux/eslint-config": "40.0.0",
     "@size-limit/preset-small-lib": "^4.5.1",
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.13",
