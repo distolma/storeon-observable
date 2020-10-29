@@ -70,11 +70,11 @@
   "size-limit": [
     {
       "path": "lib/cjs/index.js",
-      "limit": "538 B"
+      "limit": "590 B"
     },
     {
       "path": "lib/esm/index.js",
-      "limit": "410 B"
+      "limit": "464 B"
     }
   ],
   "eslintConfig": {
