@@ -2,6 +2,9 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.2
+- Make property value actual even without subscriptions to state$
+
 ## 1.0.1
 - Return node.js v10 support
 - Fix epic execution order (by Paweł Majewski) ([3f567b](https://github.com/distolma/storeon-observable/commit/3f567b32da05ffb9d42210e920931738486e0127))
