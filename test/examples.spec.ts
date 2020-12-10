@@ -1,28 +1,24 @@
 import { map, tap } from 'rxjs/operators'
 import { createStoreon } from 'storeon'
 
-import {
-  combineEpics,
-  createEpicModule,
-  Epic,
-  ofEvent,
-  toEvent
-} from '../src'
+import { combineEpics, createEpicModule, Epic, ofEvent, toEvent } from '../src'
 
 describe('examples', () => {
   it('example 1', async () => {
     const pongSpy: any = jest.fn()
     const pingSpy: any = jest.fn()
     let resume: () => void
-    const semaphore = new Promise<any>(resolve => { resume = resolve })
+    const semaphore = new Promise<void>(resolve => {
+      resume = resolve
+    })
 
     interface State {
-      isPinging: boolean;
+      isPinging: boolean
     }
 
     interface Events {
-      ping: number;
-      pong: string;
+      ping: number
+      pong: string
     }
 
     const epic: Epic<State, Events> = events$ =>
@@ -49,6 +45,6 @@ describe('examples', () => {
 
     expect(pingSpy).toBeCalledTimes(3)
     expect(pongSpy).toBeCalledTimes(1)
-    expect(pongSpy).toBeCalledWith({}, 'done')
+    expect(pongSpy).toBeCalledWith({}, 'done', store)
   })
 })

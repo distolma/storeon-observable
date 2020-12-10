@@ -8,20 +8,21 @@ describe('combineEpics', () => {
     function epic1 (actions: any): Observable<any> {
       return actions.pipe(
         ofEvent<any>('ACTION1'),
-        map(() => { return 'DELEGATED1' })
+        map(() => {
+          return 'DELEGATED1'
+        })
       )
     }
     function epic2 (actions: any): Observable<any> {
       return actions.pipe(
         ofEvent<any>('ACTION2'),
-        map(() => { return 'DELEGATED2' })
+        map(() => {
+          return 'DELEGATED2'
+        })
       )
     }
 
-    const epic = combineEpics(
-      epic1,
-      epic2
-    )
+    const epic = combineEpics(epic1, epic2)
 
     const store = { I: 'am', a: 'store' }
     const actions = new Subject()
@@ -35,21 +36,19 @@ describe('combineEpics', () => {
     actions.next(toEvent<any>('ACTION1'))
     actions.next(toEvent<any>('ACTION2'))
 
-    expect(emittedActions).toEqual([
-      'DELEGATED1',
-      'DELEGATED2'
-    ])
+    expect(emittedActions).toEqual(['DELEGATED1', 'DELEGATED2'])
   })
 
   it('should pass along every argument arbitrarily', () => {
-    return new Promise(resolve => {
-      const epic1: any = jest.fn(() => { return ['first'] })
-      const epic2: any = jest.fn(() => { return ['second'] })
+    return new Promise<void>(resolve => {
+      const epic1: any = jest.fn(() => {
+        return ['first']
+      })
+      const epic2: any = jest.fn(() => {
+        return ['second']
+      })
 
-      const rootEpic = combineEpics(
-        epic1,
-        epic2
-      )
+      const rootEpic = combineEpics(epic1, epic2)
 
       rootEpic([1, 2, 3, 4] as any, {} as any)
         .pipe(toArray())
