@@ -1,6 +1,10 @@
 pre-commit:
   paraller: true
   commands:
-    lint:
+    eslint:
       glob: "*.ts"
       run: eslint --fix {staged_files}
+commit-msg:
+  commands:
+    commitlint:
+      run: commitlint --edit $1
