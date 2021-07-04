@@ -94,8 +94,9 @@ export const toEventObservable = <State, Events = any>(
  * @typeparam OutEvent Event types expected at output.
  *
  * @example
- * import {Epic, ofType} from 'storeon-observable';
+ * import { Epic, ofEvent } from 'storeon-observable';
  * import { mapTo, delay } from 'rxjs/operators';
+ * 
  * const epic = event$ => event$.pipe(
  *   ofEvent('ping'),
  *   delay(1000),

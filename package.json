@@ -72,28 +72,43 @@
     {
       "path": "lib/cjs/index.js",
       "limit": "611 B",
-      "ignore": ["rxjs"]
+      "ignore": [
+        "rxjs"
+      ]
     },
     {
       "path": "lib/esm/index.js",
       "limit": "464 B",
-      "ignore": ["rxjs"]
+      "ignore": [
+        "rxjs"
+      ]
     }
   ],
   "eslintConfig": {
     "extends": [
       "@logux/eslint-config",
       "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "parser": "@typescript-eslint/parser",
     "rules": {
       "multiline-ternary": "off",
       "node/no-extraneous-require": "off",
       "prefer-let/prefer-let": "off",
       "func-style": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-function-return-type": "off"
+    },
+    "parserOptions": {
+      "project": [
+        "./src/tsconfig.json",
+        "./test/tsconfig.json"
+      ],
+      "tsconfigRootDir": "."
     }
   },
   "commitlint": {
