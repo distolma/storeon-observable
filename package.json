@@ -30,7 +30,7 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "rxjs": "^6.0.0",
+    "rxjs": "^7.0.0",
     "storeon": "^3.0.0"
   },
   "devDependencies": {
