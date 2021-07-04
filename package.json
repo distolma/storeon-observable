@@ -27,7 +27,8 @@
     "size": "size-limit",
     "lint": "eslint src/**/*.ts",
     "doc:build": "typedoc --out doc --theme minimal --tsconfig configs/tsconfig.json src",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release": "standard-version"
   },
   "peerDependencies": {
     "storeon": "^3.0.0"
@@ -60,6 +61,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "size-limit": "^5.0.1",
+    "standard-version": "^9.3.0",
     "storeon": "^3.1.4",
     "ts-jest": "^27.0.3",
     "typedoc": "^0.21.2",
