@@ -30,8 +30,10 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "rxjs": "^7.0.0",
     "storeon": "^3.0.0"
+  },
+  "dependencies": {
+    "rxjs": "^7.0.0"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.2",
