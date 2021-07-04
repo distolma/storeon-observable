@@ -10,6 +10,13 @@
     "lib/",
     "dist/"
   ],
+  "keywords": [
+    "Rx",
+    "Storeon",
+    "observable",
+    "async",
+    "event"
+  ],
   "repository": "git@github.com:distolma/storeon-observable.git",
   "author": "Dmytro Mostovyi <djmakaron2009@gmail.com>",
   "contributors": [
